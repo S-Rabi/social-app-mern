@@ -1,0 +1,30 @@
+.registration.cascading-right {
+  margin-right: -50px;
+}
+
+@media (max-width: 900px) {
+  .registration .cascading-right {
+    margin-right: 0;
+  }
+}
+
+.registration img {
+  max-width: 50vw;
+  max-height: 100vh;
+  object-fit: cover;
+}
+
+/* #form1,
+#form2 {
+  min-width: 50%;
+} */
+
+.registration div.col.col-auto {
+  min-width: 50%;
+}
+
+@media (max-width: 814px) {
+  .registration img {
+    visibility: hidden;
+  }
+}

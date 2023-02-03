@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+img {
+  cursor: pointer;
+}
+
+.hover-opacity-75:hover {
+  opacity: 0.88;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
