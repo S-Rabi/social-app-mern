@@ -42,7 +42,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function RecipeReviewCard() {
+export default function PostCard() {
   //popover
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -76,7 +76,7 @@ export default function RecipeReviewCard() {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="settings" onClick={null}>
             <MoreVertIcon
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}

@@ -14,8 +14,11 @@ import {
 import "./profileCard.css";
 import { Link } from "react-router-dom";
 
+import ChipMultipleSelect from "../chipmultipleselect/ChipMultipleSelect";
+
 export default function PersonalProfile({ data }) {
   console.log("data", data);
+
   return (
     <section className="vh-100" style={{ backgroundColor: "#F4F5F7" }}>
       <MDBContainer className="py-5 h-100">
@@ -33,7 +36,7 @@ export default function PersonalProfile({ data }) {
                 >
                   <MDBCardImage
                     src={
-                      data.image ||
+                      data.profileImage ||
                       "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                     }
                     alt="Avatar"
@@ -64,14 +67,14 @@ export default function PersonalProfile({ data }) {
                           {data.phone}
                         </MDBCardText>
                       </MDBCol>
-                      <MDBCol size="6" className="mb-3">
+                      {/* <MDBCol size="6" className="mb-3">
                         <MDBTypography tag="h6">Likes</MDBTypography>
                         <MDBCardText className="text-muted">
                           {data.likes.map((item) => (
                             <span>{item} &nbsp;</span>
                           ))}
                         </MDBCardText>
-                      </MDBCol>
+                      </MDBCol> */}
                     </MDBRow>
 
                     <MDBTypography tag="h6">About Me</MDBTypography>
@@ -81,6 +84,8 @@ export default function PersonalProfile({ data }) {
                       {data.about}
                     </MDBCardText>
                     <MDBRow className="pt-1"></MDBRow>
+
+                    <ChipMultipleSelect likes={data.likes} />
                     <div className="d-flex justify-content-start">
                       {data.facebook && (
                         <a

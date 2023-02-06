@@ -86,7 +86,7 @@ export default function MultipleSelectChip({ setLikes, likes }) {
   console.log("likes", likes);
   return (
     <div>
-      <FormControl sx={{ m: 1, width: "100%" }}>
+      <FormControl disabled={Boolean(!setLikes)} sx={{ m: 1, width: "100%" }}>
         <InputLabel id="demo-multiple-chip-label">LIKES</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"

@@ -20,6 +20,12 @@ function ContextProvider({ children }) {
           user: { ...action.payload },
         };
 
+      case "updaterCover":
+        return {
+          ...state,
+          user: { ...state.user, coverImage: action.payload },
+        };
+
       default:
         return state;
     }
@@ -37,8 +43,14 @@ function ContextProvider({ children }) {
       twitter: "",
       instagram: "",
       username: "",
+      coverImage: "",
+      profileImage: "",
+      followers: [],
+      followings: [],
+      isAdmin: false,
+      _id: "",
     },
-    post: [],
+    posts: [],
     isFetching: false,
     error: false,
   };

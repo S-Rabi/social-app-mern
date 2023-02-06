@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import NavBar from "../../components/navbar/NavBar";
+
 import ProfileCard from "../../components/profilecard/ProfileCard";
 import { useContext } from "react";
 import { SocialContext } from "../../context/Context";
@@ -27,7 +27,6 @@ function ViewProfile() {
   }
   return (
     <div>
-      <NavBar />
       <h1>Profile Page</h1>
 
       <ProfileCard data={data} />

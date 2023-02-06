@@ -22,6 +22,7 @@ import { SocialContext } from "../../context/Context";
 import { useNavigate } from "react-router-dom";
 import ChipMultipleSelect from "../chipmultipleselect/ChipMultipleSelect";
 import { useEffect } from "react";
+import { handleImageChange } from "../../utilities/handleImageChange";
 
 export default function PersonalProfile() {
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -34,7 +35,7 @@ export default function PersonalProfile() {
 
   const [fileData, setFiledata] = useState({
     url:
-      state?.user?.image ||
+      state?.user?.profileImage ||
       "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp",
     file: null,
   });
@@ -74,7 +75,7 @@ export default function PersonalProfile() {
       withCredentials: true,
     };
 
-    const response = await axios.post(
+    const response = await axios.put(
       baseUrl + "/users/profile",
       formdata,
       config
@@ -94,14 +95,7 @@ export default function PersonalProfile() {
       [e.target.name]: e.target.value,
     });
   };
-  const handleImageChange = (e) => {
-    console.log(" handleImageChange ~ e", e.currentTarget.files[0]);
 
-    setFiledata({
-      url: URL.createObjectURL(e.currentTarget.files[0]),
-      file: e.currentTarget.files[0],
-    });
-  };
   const [likes, setLikes] = useState(state?.user?.likes || []);
 
   // const setLikes = (e) => {
@@ -140,23 +134,23 @@ export default function PersonalProfile() {
                     <MDBInput
                       type="file"
                       className="d-none"
-                      onChange={handleImageChange}
+                      onChange={(e) => handleImageChange(e, setFiledata)}
                     />
                   </label>
-                  <MDBTypography tag="h5">{data.name}</MDBTypography>
+                  {/* <MDBTypography tag="h5">{data.name}</MDBTypography> */}
                   <MDBTypography tag="h5" className="m-auto w-75 ">
                     <MDBInput
                       tag="h5"
                       label="name"
                       id="name"
                       type="text"
-                      className="text-center "
+                      className="text-center mb-3"
                       name="name"
                       value={data.name}
                       onChange={handleChange}
                     />
                   </MDBTypography>
-                  <MDBCardText>{data.title}</MDBCardText>
+                  {/* <MDBCardText>{data.title}</MDBCardText> */}
                   <MDBTypography tag="h5" className="m-auto w-75 ">
                     <MDBInput
                       tag="h5"
@@ -183,10 +177,10 @@ export default function PersonalProfile() {
                     <hr className="mt-0 mb-4" />
                     <MDBRow className="pt-1">
                       <MDBCol size="6" className="mb-3">
-                        <MDBTypography tag="h6">Email</MDBTypography>
+                        {/* <MDBTypography tag="h6">Email</MDBTypography>
                         <MDBCardText className="text-muted">
                           {data.email}
-                        </MDBCardText>
+                        </MDBCardText> */}
                         <MDBInput
                           label="Email input"
                           id="typeURL"
@@ -197,10 +191,10 @@ export default function PersonalProfile() {
                         />
                       </MDBCol>
                       <MDBCol size="6" className="mb-3">
-                        <MDBTypography tag="h6">Phone</MDBTypography>
+                        {/* <MDBTypography tag="h6">Phone</MDBTypography>
                         <MDBCardText className="text-muted">
                           {data.phone}
-                        </MDBCardText>
+                        </MDBCardText> */}
                         <MDBInput
                           label="Phone number input"
                           id="typeURL"

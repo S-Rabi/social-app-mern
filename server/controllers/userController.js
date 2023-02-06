@@ -40,7 +40,7 @@ export const login = async (req, res) => {
         { username: req.body.emailOrUsername },
         { email: req.body.emailOrUsername },
       ],
-    }).select("-__v");
+    }).select("-password-__v");
 
     console.log("logging in ~ user", user);
 
@@ -161,7 +161,7 @@ export const updateProfile = async (req, res) => {
     console.log("hello updateProfile ", req.body);
     console.log("hello updateProfile FILE: ", req.file);
 
-    if (req.file) req.body.image = req.file.path;
+    if (req.file) req.body.profileImage = req.file.path;
 
     req.body.likes = JSON.parse(req.body.likes);
 
@@ -176,6 +176,29 @@ export const updateProfile = async (req, res) => {
     res.send({ success: true, user });
   } catch (error) {
     console.log("updateProfile ~ error:", error.message);
+
+    res.send({ success: false, error: error.message });
+  }
+};
+
+export const updateCover = async (req, res) => {
+  try {
+    console.log("hello updateCover ", req.body);
+    console.log("hello updateCover FILE: ", req.file);
+
+    if (req.file) req.body.coverImage = req.file.path;
+
+    const user = await User.findByIdAndUpdate(req.user, req.body, {
+      new: true,
+    }).select("-password -__v");
+
+    console.log("updateCover ~ user:", user);
+
+    if (!user) return res.send({ success: false, errorId: 404 }); // user not found
+
+    res.json({ success: true, coverImage: user.coverImage }).status(200);
+  } catch (error) {
+    console.log("updateCover ~ error:", error.message);
 
     res.send({ success: false, error: error.message });
   }
