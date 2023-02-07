@@ -28,7 +28,13 @@ const storage = new CloudinaryStorage({
       return extension;
     },
     public_id: (req, file) =>
-      `${req.user}-${req.user.profileImage ? "profileImage" : "coverImage"}`,
+      `${req.user}-${
+        req.user.profileImage
+          ? "profileImage"
+          : req.user.coverImage
+          ? "coverImage"
+          : "postImage"
+      }`,
   },
 });
 

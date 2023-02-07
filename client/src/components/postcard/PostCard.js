@@ -15,11 +15,12 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Form, Ref } from "semantic-ui-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import Badge from "@mui/material/Badge";
 
 import Popover from "../popover/Popover";
-import Comment from "../comment/Comment";
+import Comments from "../comments/Comments";
+import { SocialContext } from "../../context/Context";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -42,9 +43,12 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard() {
+export default function PostCard({ post }) {
+  console.log("posts", post);
   //popover
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const { state } = useContext(SocialContext);
 
   const mainRef = useRef(null);
   const open = Boolean(anchorEl);
@@ -71,9 +75,17 @@ export default function PostCard() {
     <Card className="mb-2">
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            SA
-          </Avatar>
+          (
+            <img
+              src={post?.author?.profileImage}
+              className="rounded-circle"
+              style={{ width: "40px", height: "40px" }}
+              alt=""
+            />
+          ) ||
+          (<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            {` ${state.user.name[0]}${state.user.name[5]}`}
+          </Avatar>)()
         }
         action={
           <IconButton aria-label="settings" onClick={null}>
@@ -93,20 +105,18 @@ export default function PostCard() {
             />
           </IconButton>
         }
-        title="Social-App"
-        subheader={Date()}
+        title={post?.title || "Post Title"}
+        subheader={post?.createdAt || Date()}
       />
       <CardMedia
         component="img"
-        height="194"
-        image="https://images.unsplash.com/photo-1493612276216-ee3925520721?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHNvY2lhbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-        alt="Paella dish"
+        height={post?.postImage && "194"}
+        image={post?.postImage || ""}
+        alt="Post img"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {post?.text || "post-text"}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -130,7 +140,7 @@ export default function PostCard() {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           {/* reply form */}
-          <Comment />
+          <Comments />
           <Form reply>
             <Ref innerRef={mainRef}>
               <Form.TextArea />

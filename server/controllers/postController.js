@@ -2,21 +2,15 @@ import Post from "../models/Post.js";
 
 export const add = async (req, res) => {
   try {
-    req.body.owner = req.user;
-
-    if (req.file) req.body.image = req.file.path;
-    console.log("add ~ req.file", req.file);
-
-    const post = await (
-      await Post.create(req.body)
-    ).populate({ path: "author", select: "username email image" });
-
-    console.log(" add ~ post", post);
-
+    req.body.author = req.user;
+    if (req.file) req.body.postImage = req.file.path;
+    const post = await Post.create(req.body).populate({
+      path: "author",
+      select: "username email profileImage",
+    });
     res.send({ success: true, post });
   } catch (error) {
     console.log(" add ~ error", error.message);
-
     res.send({ success: false, error: error.message });
   }
 };
@@ -27,10 +21,57 @@ export const list = async (req, res) => {
 
     const posts = await Post.find()
       .select("-__v")
-      .populate({ path: "author", select: "username email image" }) // post owner
-      .populate({ path: "comments.author", select: "username email image" }); // comment owner
-
+      .populate({ path: "author", select: "username email profileImage" });
+    // .populate({
+    //   path: "likes",
+    //   select: "username email profileImage",
+    //   options: { sort: { createdAt: -1 } },
+    // })
+    // .populate({
+    //   path: "comments",
+    //   select: "-__v",
+    //   options: { sort: { createdAt: -1 } },
+    // })
+    // .populate({
+    //   path: "comments.author",
+    //   select: "username email profileImage",
+    // })
+    // .populate({
+    //   path: "comments.likes",
+    //   select: "username email profileImage",
+    //   options: { sort: { createdAt: -1 } },
+    // })
+    // .populate({
+    //   path: "comments.comments",
+    //   select: "-__v",
+    //   options: { sort: { createdAt: -1 } },
+    // })
+    // .populate({
+    //   path: "comments.comments.author",
+    //   select: "username email profileImage",
+    // })
+    // .populate({
+    //   path: "comments.comments.likes",
+    //   select: "username email profileImage",
+    //   options: { sort: { createdAt: -1 } },
+    // })
+    // .populate({
+    //   path: "comments.comments.comments",
+    //   select: "-__v",
+    //   options: { sort: { createdAt: -1 } },
+    // })
+    // .populate({
+    //   path: "comments.comments.comments.author",
+    //   select: "username email profileImage",
+    // })
+    // .populate({
+    //   path: "comments.comments.comments.likes",
+    //   select: "username email profileImage",
+    //   options: { sort: { createdAt: -1 } },
+    // })
+    // .sort({ createdAt: -1 }); // post author // comment author
     res.send({ success: true, posts });
+    console.log("list", posts);
   } catch (error) {
     console.log("post-list ~ error", error.message);
 
@@ -63,7 +104,7 @@ export const edit = async (req, res) => {
 
     const { postId: _id, author, text } = req.body;
 
-    if (req.user !== req.body.owner)
+    if (req.user !== req.body.author)
       return res.send({ success: false, errorId: 0 });
 
     const newPost = await Post.findByIdAndUpdate(

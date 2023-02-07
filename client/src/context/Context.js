@@ -25,6 +25,16 @@ function ContextProvider({ children }) {
           ...state,
           user: { ...state.user, coverImage: action.payload },
         };
+      case "addPost":
+        return {
+          ...state,
+          posts: [...state.posts, action.payload],
+        };
+      case "getPosts":
+        return {
+          ...state,
+          posts: [...action.payload],
+        };
 
       default:
         return state;

@@ -1,7 +1,6 @@
 import Header from "../../components/header/Header";
-
-import Posts from "../../components/posts/Posts.js";
-
+import CreatePost from "../../components/createPost/CreatePost";
+import Posts from "../../components/posts/Posts";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { SocialContext } from "../../context/Context";
@@ -9,7 +8,7 @@ import { handleImageChange } from "../../utilities/handleImageChange";
 
 function Home() {
   const { state, dispatch } = useContext(SocialContext);
-  console.log("coverImage", state.user);
+
   const [fileData, setFiledata] = useState({
     url:
       state?.user?.coverImage ||
@@ -48,9 +47,50 @@ function Home() {
   useEffect(() => {
     document.title = "Social App ";
   }, []);
+
+  // -------POSTS-----------------
+
+  const [staticModal, setStaticModal] = useState(false);
+  const toggleShow = () => setStaticModal(!staticModal);
+
+  const showAddPost = (e) => {
+    e.preventDefault();
+    toggleShow();
+  };
+
+  const addNewPost = async (formData) => {
+    console.log("Level 3");
+    await axios
+      .post(`${baseUrl}/posts/add`, formData, {
+        Headers: { "content-type": "multipart/form-data" },
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          dispatch({ type: "addPost", payload: res.data });
+          // toggleShow();
+        } else if (res.status === 401) {
+          dispatch({ type: "logout" });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
-      <Header data={state.user} updateCover={updateCover} fileData={fileData} />
+      <Header
+        updateCover={updateCover}
+        fileData={fileData}
+        showAddPost={showAddPost}
+        heading={state.user.name}
+        subheading={"Home Page"}
+      />
+      <CreatePost
+        toggleShow={toggleShow}
+        staticModal={staticModal}
+        setStaticModal={setStaticModal}
+        data={state}
+        addNewPost={addNewPost}
+      />
       <div className="homeContainer">
         <Posts />
       </div>

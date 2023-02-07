@@ -1,7 +1,14 @@
 import React from "react";
+import "./Header.css";
 
-export default function App({ updateCover, fileData, data }) {
-  console.log("filedata header", fileData);
+export default function App({
+  updateCover,
+  fileData,
+
+  showAddPost,
+  heading,
+  subheading,
+}) {
   return (
     <header>
       <label className="d-block">
@@ -18,15 +25,15 @@ export default function App({ updateCover, fileData, data }) {
           >
             <div className="d-flex justify-content-center align-items-center h-100">
               <div className="text-white">
-                <h1 className="mb-3">{data.name}</h1>
-                <h4 className="mb-3">Home Page</h4>
-                <a
-                  className="btn btn-outline-light btn-lg"
-                  href="#!"
-                  role="button"
+                <h1 className="mb-3">{heading}</h1>
+                <h4 className="mb-3">{subheading}</h4>
+                <div
+                  className="btn btn-outline-light btn-lg createPost"
+                  title="Create a new Post"
+                  onClick={showAddPost}
                 >
                   Create Post
-                </a>
+                </div>
               </div>
             </div>
           </div>

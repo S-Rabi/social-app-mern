@@ -1,9 +1,9 @@
 import PostCard from "../postcard/PostCard";
 
-function Post() {
+function Post({ post }) {
   return (
     <div>
-      <PostCard />
+      <PostCard post={post} />
     </div>
   );
 }
